@@ -1,0 +1,39 @@
+#!/bin/bash
+set -euo pipefail
+
+readonly BIN_DIR=$(dirname $0)  # relative path
+readonly BUILD_DIR=$1
+readonly CACHE_DIR=$2
+
+mkdir -p ${CACHE_DIR}
+mkdir -p ${BUILD_DIR}/vendor
+
+fetch() {
+  local -r PKG_NAME=$1
+  local -r TAR_DIR=$2
+  local -r TAR_OPT=$3
+  local -r DL_URL=$4
+
+  local -r BASENAME=$(basename ${DL_URL})
+  local -r DL_DIRNAME=${CACHE_DIR}/${PKG_NAME}
+  local -r DL_FILEPATH=${DL_DIRNAME}/${BASENAME}
+  local -r PKG_DIRNAME=${BUILD_DIR}/vendor/${PKG_NAME}
+
+  mkdir -p ${DL_DIRNAME}
+  if ! [ -e ${DL_FILEPATH} ]; then
+    echo "-----> Downloading ${DL_URL}"
+    curl ${DL_URL} -L -s -o ${DL_FILEPATH}
+  fi
+
+  echo "-----> Extracting to ${PKG_DIRNAME}"
+  tar ${TAR_OPT} ${DL_FILEPATH} -C ${DL_DIRNAME}
+  rm -rf ${PKG_DIRNAME}
+  mv ${DL_DIRNAME}/${TAR_DIR} ${PKG_DIRNAME}
+}
+
+fetch mongodb mongodb-linux-x86_64-ubuntu1404-3.0.1 -xzf https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1404-3.0.1.tgz
+
+echo "-----> Writing ${BUILD_DIR}/.profile.d/mongodb.sh"
+
+mkdir -p ${BUILD_DIR}/.profile.d
+cp ${BIN_DIR}/mongodb.sh ${BUILD_DIR}/.profile.d/
