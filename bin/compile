@@ -31,8 +31,8 @@ fetch() {
   mv ${DL_DIRNAME}/${TAR_DIR} ${PKG_DIRNAME}
 }
 
-#fetch mongodb mongodb-linux-x86_64-ubuntu1404-3.0.1 -xzf https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1404-3.0.1.tgz
-fetch mongodb mongodb-linux-x86_64-2.6.9 -xzf https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.6.9.tgz
+fetch mongodb mongodb-linux-x86_64-ubuntu1404-3.0.6 -xzf https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1404-3.0.6.tgz
+#fetch mongodb mongodb-linux-x86_64-2.6.9 -xzf https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.6.9.tgz
 
 echo "-----> Writing ${BUILD_DIR}/.profile.d/mongodb.sh"
 
